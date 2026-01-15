@@ -1,24 +1,30 @@
-# Base image
 FROM php:8.2-apache
 
-# PHP extensions
-RUN docker-php-ext-install curl json mbstring
+# System dependencies install karo (IMPORTANT)
+RUN apt-get update && apt-get install -y \
+    libcurl4-openssl-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Enable mod_rewrite
+# PHP extensions install karo
+RUN docker-php-ext-install \
+    curl \
+    json \
+    mbstring
+
+# Apache rewrite enable
 RUN a2enmod rewrite
 
-# Set working directory
+# Workdir
 WORKDIR /var/www/html
 
-# Copy project files
-COPY . .
+# Code copy
+COPY . /var/www/html/
 
-# Set permissions for JSON/CSV storage files
-RUN touch users.json user_requests.json waiting_users.json movies.csv error.log \
-    && chmod 777 users.json user_requests.json waiting_users.json movies.csv error.log
+# Permissions (CSV / JSON files ke liye)
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
 
-# Expose port
-EXPOSE 8080
-
-# Start Apache in foreground
-CMD ["apache2-foreground"]
+EXPOSE 80
