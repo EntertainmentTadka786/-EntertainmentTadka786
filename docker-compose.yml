@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: entertainment_tadka
+    ports:
+      - "8080:80"
+    restart: always
