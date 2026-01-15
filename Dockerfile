@@ -1,29 +1,25 @@
 FROM php:8.2-apache
 
-# System dependencies install karo (IMPORTANT)
+# System dependencies
 RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
-    libzip-dev \
     zip \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# PHP extensions install karo
+# PHP extensions (json PHP 8 me built-in hai)
 RUN docker-php-ext-install \
     curl \
-    json \
     mbstring
 
-# Apache rewrite enable
+# Apache rewrite
 RUN a2enmod rewrite
 
-# Workdir
 WORKDIR /var/www/html
 
-# Code copy
 COPY . /var/www/html/
 
-# Permissions (CSV / JSON files ke liye)
+# Permissions (CSV / JSON ke liye)
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
