@@ -1,0 +1,12 @@
+{
+    "name": "entertainment/tadka-bot",
+    "description": "Telegram bot for movie requests and auto-forwarding",
+    "require": {
+        "php": "^8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "ETBot\\": "src/"
+        }
+    }
+}
